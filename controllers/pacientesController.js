@@ -9,6 +9,7 @@ const pacientesController = {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
    return res.status(401).json({ error: 'Token de autenticación inválido.' });
    }
+   
 
     const token = authHeader.replace('Bearer ', '');
 
