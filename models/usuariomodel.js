@@ -31,7 +31,7 @@ const Usuario = sequelize.define('usuarios', {
     // Hook que se ejecutará antes de crear un nuevo registro en la base de datos
     beforeCreate: (usuario) => {
       // Genera el hash de la contraseña
-      const hashedContraseña = bcrypt.hashSync(usuario.contraseña, 5); // 10 es el número de rondas de encriptación
+      const hashedContraseña = bcrypt.hashSync(usuario.contraseña, 5); // 5  es el número de rondas de encriptación
       // Asigna el hash al campo de contraseña
       usuario.contraseña = hashedContraseña;
     },

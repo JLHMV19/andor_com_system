@@ -1,4 +1,5 @@
 const Usuario = require('../models/usuariomodel');
+const authController = require('./authController');
 
 const usuariosController = {
   // Obtener todos los usuarios
@@ -12,22 +13,28 @@ const usuariosController = {
   },
 
   // Crear un nuevo usuario
-    crearUsuario: async (req, res) => {
-      const { nombreUsuario, contraseña, privilegio, correo } = req.body;
-      try {
-        //metodo para comprobar si ya hay otro user
-        const existingUser = await Usuario.findOne({ where: { nombreUsuario } });
-        if (existingUser) {
-          return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
-        }
-        const users = await Usuario.create({ nombreUsuario, contraseña, privilegio, correo });
-        res.status(201).json(users);
-      } catch (err) {
-        console.log(err);
-        console.log('Error posting users');
-        res.status(500).json({ message: 'Error in posting users' });
+  crearUsuario: async (req, res) => {
+    const { nombreUsuario, contraseña, privilegio, correo } = req.body;
+    try {
+      // Método para comprobar si ya hay otro usuario
+      const existingUser = await Usuario.findOne({ where: { nombreUsuario } });
+      if (existingUser) {
+        return res.status(400).json({ error: 'El nombre de usuario ya está en uso.' });
       }
-    },
+
+      const newUser = await Usuario.create({ nombreUsuario, contraseña, privilegio, correo });
+
+      // Aquí realizamos el inicio de sesión llamando al controlador authController.login
+      const loginResponse = await authController.login(req, res);
+
+      // Si el inicio de sesión es exitoso, simplemente enviamos la respuesta
+      res.status(loginResponse.status).json(loginResponse.body);
+    } catch (err) {
+      console.log(err);
+      console.log('Error posting users');
+      res.status(500).json({ message: 'Error in posting users' });
+    }
+  },
     
 
   // Obtener información de un usuario específico
