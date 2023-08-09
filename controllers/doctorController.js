@@ -6,7 +6,7 @@ const doctoresController = {
   crearDoctor: async (req, res) => {
     // Obtener el token de autenticación del encabezado de la solicitud
     const token = req.header('Authorization').replace('Bearer ', '');
-    
+    console.log('token recibido',token)
     try {
       // Verificar y decodificar el token para obtener la información de usuario
       const decodedToken = jwt.verify(token, 'sistema');

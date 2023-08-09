@@ -33,4 +33,4 @@ Cita.belongsTo(Doctor, {
   foreignKey: 'doctores_doctorId',
 });
 
-module.exports = Cita;
+module.exports = Cita; 
