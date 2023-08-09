@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Doctor = require('../models/doctor');
+const e = require('express');
 
 const doctoresController = {
   crearDoctor: async (req, res) => {
@@ -27,6 +28,7 @@ const doctoresController = {
 
       res.status(201).json(nuevoDoctor);
     } catch (error) {
+      console.log('Error en server',error)
       res.status(500).json({ error: 'Error en la creación del doctor.' });
     }
   },
