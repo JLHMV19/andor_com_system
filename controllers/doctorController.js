@@ -1,12 +1,18 @@
 const jwt = require('jsonwebtoken');
 const Doctor = require('../models/doctor');
-const e = require('express');
+
 
 const doctoresController = {
   crearDoctor: async (req, res) => {
     // Obtener el token de autenticación del encabezado de la solicitud
-    const token = req.header('Authorization').replace('Bearer ', '');
-    console.log('token recibido',token)
+    const authHeader = req.header('Authorization');
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token de autenticación inválido.' });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+
     try {
       // Verificar y decodificar el token para obtener la información de usuario
       const decodedToken = jwt.verify(token, 'sistema');
@@ -28,7 +34,7 @@ const doctoresController = {
 
       res.status(201).json(nuevoDoctor);
     } catch (error) {
-      console.log('Error en server',error)
+      console.log('Error en server', error);
       res.status(500).json({ error: 'Error en la creación del doctor.' });
     }
   },

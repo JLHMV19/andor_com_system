@@ -25,10 +25,10 @@ const usuariosController = {
       const newUser = await Usuario.create({ nombreUsuario, contraseña, privilegio, correo });
 
       // Aquí realizamos el inicio de sesión llamando al controlador authController.login
-      const loginResponse = await authController.login(req, res);
+      //const loginResponse = await authController.login(req, res);
 
       // Si el inicio de sesión es exitoso, simplemente enviamos la respuesta
-      res.status(loginResponse.status).json(loginResponse.body);
+      //res.status(loginResponse.status).json(loginResponse.body);
     } catch (err) {
       console.log(err);
       console.log('Error posting users');
