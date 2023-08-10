@@ -8,7 +8,7 @@ const Cita = sequelize.define('citas', {
     autoIncrement: true,
   },
   fechacitas: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   status: {
