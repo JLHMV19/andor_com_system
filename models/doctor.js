@@ -1,12 +1,13 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../conexion');
-const Usuario = require('./usuariomodel');
+const bcrypt = require('bcrypt');
 
 const Doctor = sequelize.define('doctores', {
   doctorId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
   },
   nombreDoctor: {
     type: DataTypes.STRING,
@@ -16,19 +17,17 @@ const Doctor = sequelize.define('doctores', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  cedulaprofesional: {
-    type: DataTypes.STRING,
+  usuarios_idusuarios: {
+    type: DataTypes.STRING, // Cambiado a VARCHAR en lugar de INT
     allowNull: false,
   },
+  cedulaprofesional: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
-  sequelize,
-  modelName: 'Doctor',
-  timestamps: false
-});
-
-// Establecer la relación uno a uno entre Doctor y Usuario
-Doctor.belongsTo(Usuario, {
-  foreignKey: 'usuarios_idusuarios',
+  timestamps: false,
 });
 
 module.exports = Doctor;
+

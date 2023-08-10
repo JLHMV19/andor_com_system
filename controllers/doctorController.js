@@ -1,35 +1,17 @@
-const jwt = require('jsonwebtoken');
 const Doctor = require('../models/doctor');
-
 
 const doctoresController = {
   crearDoctor: async (req, res) => {
-    // Obtener el token de autenticación del encabezado de la solicitud
-    const authHeader = req.header('Authorization');
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Token de autenticación inválido.' });
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-
     try {
-      // Verificar y decodificar el token para obtener la información de usuario
-      const decodedToken = jwt.verify(token, 'sistema');
-      const { id: idUsuario, privilegio } = decodedToken;
+      // Obtener los datos del formulario
+      const { nombreDoctor, especialidad, cedulaprofesional, usuarios_idusuarios } = req.body;
 
-      // Verificar que el usuario tenga el privilegio de "doctor"
-      if (privilegio !== 'doctor') {
-        return res.status(403).json({ error: 'No tienes permiso para crear un nuevo doctor.' });
-      }
-
-      // Si el usuario es un doctor, proceder a crear el registro en la tabla de doctores
-      const { nombreDoctor, especialidad, cedulaprofesional } = req.body;
+      // Crear el registro en la tabla de doctores
       const nuevoDoctor = await Doctor.create({
         nombreDoctor,
         especialidad,
         cedulaprofesional,
-        usuarios_idusuarios: idUsuario, // Usar la ID de usuario como la llave foránea
+        usuarios_idusuarios,
       });
 
       res.status(201).json(nuevoDoctor);
@@ -48,7 +30,6 @@ const doctoresController = {
     }
   },
 
-  // Obtener información de un doctor específico
   obtenerDoctor: async (req, res) => {
     const doctorId = req.params.id;
     try {
@@ -63,7 +44,6 @@ const doctoresController = {
     }
   },
 
-  // Actualizar información de un doctor específico
   actualizarDoctor: async (req, res) => {
     const doctorId = req.params.id;
     try {
@@ -80,7 +60,6 @@ const doctoresController = {
     }
   },
 
-  // Eliminar un doctor específico
   eliminarDoctor: async (req, res) => {
     const doctorId = req.params.id;
     try {

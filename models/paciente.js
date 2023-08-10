@@ -1,44 +1,39 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../conexion');
-const Usuario = require('./usuariomodel');
-const Doctor = require('./doctor');
 
 const Paciente = sequelize.define('pacientes', {
   idpacientes: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+    allowNull: false,
   },
   nombrepacientes: {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  doctores_doctorId: {
+    type: DataTypes.STRING, // Cambiado a VARCHAR en lugar de INT
+    allowNull: true,
+  },
+  usuarios_idusuarios: {
+    type: DataTypes.STRING, // Cambiado a VARCHAR en lugar de INT
+    allowNull: true,
+  },
   RFCpaciente: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   direccion: {
-    type: DataTypes.BLOB, // Solo como ejemplo, puedes ajustar el tipo de datos según tus necesidades
+    type: DataTypes.BLOB,
     allowNull: true,
   },
   alegias: {
-    type: DataTypes.BLOB, // Solo como ejemplo, puedes ajustar el tipo de datos según tus necesidades
+    type: DataTypes.BLOB,
     allowNull: true,
-  }
+  },
 }, {
-  sequelize,
-  modelName: 'Paciente',
-  timestamps: false
-});
-
-// Establecer la relación uno a muchos entre Doctor y Paciente
-Doctor.hasMany(Paciente, {
-  foreignKey: 'doctores_doctorId',
-});
-
-// Establecer la relación uno a uno entre Paciente y Usuario
-Paciente.belongsTo(Usuario, {
-  foreignKey: 'usuarios_idusuarios',
+  timestamps: false,
 });
 
 module.exports = Paciente;

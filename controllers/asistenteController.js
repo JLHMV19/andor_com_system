@@ -1,34 +1,16 @@
-const jwt = require('jsonwebtoken');
 const Asistente = require('../models/asistente');
 
 const asistentesController = {
-  // Crear un nuevo asistente
   crearAsistente: async (req, res) => {
-    // Obtener el token de autenticación del encabezado de la solicitud
-    const authHeader = req.header('Authorization');
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Token de autenticación inválido.' });
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-
     try {
-      // Verificar y decodificar el token para obtener la información de usuario
-      const decodedToken = jwt.verify(token, 'sistema');
-      const { id: idUsuario, privilegio } = decodedToken;
+      // Obtener los datos del formulario
+      const { nombreAsistente, doctores_doctorId, usuarios_idusuarios1 } = req.body;
 
-      // Verificar que el usuario tenga el privilegio de "asistente"
-      if (privilegio !== 'asistente') {
-        return res.status(403).json({ error: 'No tienes permiso para crear un nuevo asistente.' });
-      }
-
-      // Si el usuario es un asistente, proceder a crear el registro en la tabla de asistentes
-      const { nombreAsistente, doctores_doctorId } = req.body;
+      // Crear el registro en la tabla de asistentes
       const nuevoAsistente = await Asistente.create({
         nombreAsistente,
         doctores_doctorId,
-        usuarios_idusuarios1: idUsuario, // Usar la ID de usuario como la llave foránea
+        usuarios_idusuarios1,
       });
 
       res.status(201).json(nuevoAsistente);
@@ -37,7 +19,6 @@ const asistentesController = {
     }
   },
 
-  // Obtener todos los asistentes
   obtenerAsistentes: async (req, res) => {
     try {
       const asistentes = await Asistente.findAll();
@@ -47,7 +28,6 @@ const asistentesController = {
     }
   },
 
-  // Obtener información de un asistente específico
   obtenerAsistente: async (req, res) => {
     const asistenteId = req.params.id;
     try {
@@ -62,7 +42,6 @@ const asistentesController = {
     }
   },
 
-  // Actualizar información de un asistente específico
   actualizarAsistente: async (req, res) => {
     const asistenteId = req.params.id;
     try {
@@ -79,7 +58,6 @@ const asistentesController = {
     }
   },
 
-  // Eliminar un asistente específico
   eliminarAsistente: async (req, res) => {
     const asistenteId = req.params.id;
     try {
@@ -98,3 +76,4 @@ const asistentesController = {
 };
 
 module.exports = asistentesController;
+
