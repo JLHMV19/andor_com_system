@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../conexion');
-const Paciente = require('./paciente');
-const Doctor = require('./doctor');
 
 const Cita = sequelize.define('citas', {
   idcitas: {
@@ -17,20 +15,19 @@ const Cita = sequelize.define('citas', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  pacientes_idpacientes: {
+    type: DataTypes.STRING, // Cambiado a varchar
+    allowNull: true, // Puedes ajustar esto según tu lógica
+  },
+  doctores_doctorId: {
+    type: DataTypes.STRING, // Cambiado a varchar
+    allowNull: true, // Puedes ajustar esto según tu lógica
+  },
 }, {
   sequelize,
   modelName: 'Cita',
   timestamps: false
 });
 
-// Establecer la relación muchos a uno entre Paciente y Cita
-Cita.belongsTo(Paciente, {
-  foreignKey: 'pacientes_idpacientes',
-});
+module.exports = Cita;
 
-// Establecer la relación muchos a uno entre Doctor y Cita
-Cita.belongsTo(Doctor, {
-  foreignKey: 'doctores_doctorId',
-});
-
-module.exports = Cita; 
