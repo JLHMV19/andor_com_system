@@ -15,6 +15,7 @@ const citasController = {
 
       res.status(201).json(nuevaCita);
     } catch (error) {
+      console.log('Error en server', error);
       res.status(500).json({ error: 'Error en la creación de la cita.' });
     }
   },

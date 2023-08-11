@@ -26,6 +26,7 @@ const pacientesController = {
   obtenerPacientes: async (req, res) => {
     try {
       const pacientes = await Paciente.findAll();
+      console.log(pacientes);
       res.json(pacientes);
     } catch (error) {
       res.status(500).json({ error: 'No se pudo obtener la lista de pacientes.' });
