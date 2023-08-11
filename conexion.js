@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize =  new Sequelize('mydbprov', 'root', 'BadLands2045.', {
-    host: 'localhost',
+const sequelize =  new Sequelize('railway', 'root', 'zIait2wG9DmYCdImOapq', {
+    host: 'containers-us-west-97.railway.app',
+    port:5757,
     dialect: 'mysql'
     });
 
