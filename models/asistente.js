@@ -14,11 +14,11 @@ const Asistente = sequelize.define('asistentes', {
   },
   doctores_doctorId: {
     type: DataTypes.STRING, // Cambiado a VARCHAR en lugar de INT
-    allowNull: false,
+    allowNull: true,
   },
   usuarios_idusuarios1: {
     type: DataTypes.STRING, // Cambiado a VARCHAR en lugar de INT
-    allowNull: false,
+    allowNull: true,
   },
 }, {
   timestamps: false,
