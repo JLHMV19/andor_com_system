@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors'); // <--- importar cors
 const app = express();
 const port = 3000;
 const sequelize = require('./conexion.js');
@@ -9,23 +10,22 @@ const pacientesRouter = require('./routes/pacientes.js');
 const asistentesRouter = require('./routes/asistentes.js');
 const citasRouter = require('./routes/citas.js');
 
-//autehtication
+// Middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
+// Configurar CORS
+app.use(cors({
+  origin: [
+    'http://localhost:8100',          // tu app Ionic
+    'http://localhost:4200',          // si quieres seguir permitiendo Angular
+    'https://andormedproyect.web.app' // producción
+  ],
+  methods: ['GET','POST','PUT','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization']
+}));
 
-//middleware
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
-
-    app.use((req, res, next) => {
-      res.setHeader('Access-Control-Allow-Origin', 'https://andormedproyect.web.app');
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-      res.setHeader('Access-Control-Max-Age', '86400');
-      next();
-    });
-
-//routes
+// Routes
 app.use('/usuario', usuariosRouter);
 app.post('/login', authController.login);
 app.use('/doctor', doctoresRouter);
@@ -35,10 +35,10 @@ app.use('/citas', citasRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
-    });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 }).on('error', (err) => {
     console.error('Error in server:', err);
-  });
+});
